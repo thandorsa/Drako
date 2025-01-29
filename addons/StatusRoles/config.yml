@@ -1,0 +1,46 @@
+Logging:
+  Enabled: false
+  ChannelID: "CHANNEL_ID"
+
+  Add:
+    Embed:
+      Title: "Status Update"
+      Description:
+        - "{user} has updated their status to {status}."
+        - "Roles Assigned: {roles}"
+      Footer:
+        Text: "Status Role Bot"
+        Icon: ""
+      Author:
+        Text: "Status Logger"
+        Icon: ""
+      Color: "#1769FF"
+      Image: ""
+      Thumbnail: ""
+
+  Remove:
+    Embed:
+      Title: "Status Update"
+      Description:
+        - "{user} has removed their status of {status}."
+        - "Roles Removed: {roles}"
+      Footer:
+        Text: "Status Role Bot"
+        Icon: ""
+      Author:
+        Text: "Status Logger"
+        Icon: ""
+      Color: "#FF0000"
+      Image: ""
+      Thumbnail: ""
+
+Status:
+  1: 
+    Status: "Drako Development" # Status
+    WhitelistRole: ["ROLE_ID1", "ROLE_ID2"] # ROLE_ID1/2 can get the reward
+    Roles: ["ROLE_ID", "ROLE_ID"] # Which role will be given?
+
+  2: 
+    Status: "Drako Bot" # Status
+    WhitelistRole: [] # Anyone can get this reward
+    Roles: ["ROLE_ID", "ROLE_ID"] # Which role will be given?

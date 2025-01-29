@@ -1,0 +1,180 @@
+# ===========================================================================
+# GENERAL CONFIGURATIONS
+# ===========================================================================
+
+# Roles that will lose send message permissions when channels are locked.
+LOCK_ROLES:
+  - "1264328522198159503"  # Example: @everyone role (guild ID) or any specific role ID.
+
+# Enable or disable sending an embed message to channels when they are locked/unlocked.
+ENABLE_EMBED_MESSAGE: true  # Set to false if you do not want embed messages sent.
+
+# Footer text and icon for embed messages.
+FOOTER_TEXT: "x3n"
+FOOTER_ICON: "https://cdn.discordapp.com/avatars/668503431576813618/a_06305825d72912cf35d438e94bc2de84.gif?size=4096"
+
+# Configuration for automatically deleting embed messages after a specified interval.
+auto_delete_embed:
+  enabled: false   # Set to false if you do not want the bot to delete embed messages automatically.
+  interval: 30    # Time in seconds before the embed message is deleted.
+
+# ===========================================================================
+# EMBED TEMPLATES FOR AFFECTED CHANNELS
+# ===========================================================================
+# Customize the embeds that are sent to channels when they are locked, unlocked, etc.
+
+embed_templates:
+  lock:
+    title: "Channel Locked"
+    description: "🔒 {channel} has been locked by {user}"
+    color: "#FF0000"
+  unlock:
+    title: "Channel Unlocked"
+    description: "🔓 {channel} has been unlocked by {user}"
+    color: "#00FF00"
+  lockall:
+    title: "All Channels Locked"
+    description: "🔒 All channels have been locked by {user}"
+    color: "#FF0000"
+  unlockall:
+    title: "All Channels Unlocked"
+    description: "🔓 All channels have been unlocked by {user}"
+    color: "#00FF00"
+  lockdown:
+    title: "Server Locked Down"
+    description: "🔒 The server has been locked down by {user}"
+    color: "#FF0000"
+  removelockdown:
+    title: "Server Lockdown Removed"
+    description: "🔓 The server lockdown has been removed by {user}"
+    color: "#00FF00"
+  hide:
+    title: "Channel Hidden"
+    description: "🚫 {channel} has been hidden by {user}"
+    color: "#FF0000"
+  unhide:
+    title: "Channel Unhidden"
+    description: "👁️ {channel} has been unhidden by {user}"
+    color: "#00FF00"
+
+# ===========================================================================
+# COMMAND PERMISSIONS
+# ===========================================================================
+# Define which roles are allowed to use specific commands.
+command_permissions:
+  lock:  # Roles allowed to use the /lock command.
+    - "1325615892226117694"
+    - "ROLE_ID_3"
+  unlock:  # Roles allowed to use the /unlock command.
+    - "1325615892226117694"
+    - "ROLE_ID_3"
+  lockall:  # Roles allowed to use the /lockall command.
+    - "1325615892226117694"
+    - "ROLE_ID_3"
+  unlockall:  # Roles allowed to use the /unlockall command.
+    - "1325615892226117694"
+    - "ROLE_ID_3"
+  lockdown:  # Roles allowed to use the /lockdown command.
+    - "1325615892226117694"
+    - "ROLE_ID_3"
+  removelockdown:  # Roles allowed to use the /removelockdown command.
+    - "1325615892226117694"
+    - "ROLE_ID_3"
+  hide:  # Roles allowed to use the /hide command.
+    - "1325615892226117694"
+    - "ROLE_ID_3"
+  unhide:  # Roles allowed to use the /unhide command.
+    - "1325615892226117694"
+    - "ROLE_ID_3"
+
+# ===========================================================================
+# EVENT LOGGING CONFIGURATIONS
+# ===========================================================================
+# Logging configurations for various commands. Enable or disable logging,
+# specify the logs channel, and customize embed messages.
+
+lock:
+  Enabled: true  # Enable logging for the /lock command.
+  LogsChannelID: "LOGS_CHANNEL_ID"
+  Embed:
+    Title: "🔒 Channel Locked"
+    Description:
+      - "**👤 Executor:** {executor}"
+      - "**📺 Channel Name:** {channelName}"
+      - "**📅 Date:** {longtime}, {shorttime}"
+    Footer: "🔒 Moderation Action | YOUR_FOOTER_TEXT"
+    Color: "#FF0000"
+  Thumbnail: true  # Set to false if you don't want to include a thumbnail.
+
+unlock:
+  Enabled: true  # Enable logging for the /unlock command.
+  LogsChannelID: "LOGS_CHANNEL_ID"
+  Embed:
+    Title: "🔓 Channel Unlocked"
+    Description:
+      - "**👤 Executor:** {executor}"
+      - "**📺 Channel Name:** {channelName}"
+      - "**📅 Date:** {longtime}, {shorttime}"
+    Footer: "🔒 Moderation Action | YOUR_FOOTER_TEXT"
+    Color: "#6bfc03"
+  Thumbnail: true
+
+lockdown:
+  Enabled: true  # Enable logging for the /lockdown command.
+  LogsChannelID: "LOGS_CHANNEL_ID"
+  Embed:
+    Title: "🔒 Server Locked Down"
+    Description:
+      - "**👤 Executor:** {executor}"
+      - "**📅 Date:** {longtime}, {shorttime}"
+    Footer: "🔒 Moderation Action | YOUR_FOOTER_TEXT"
+    Color: "#FF0000"
+  Thumbnail: true
+
+removelockdown:
+  Enabled: true  # Enable logging for the /removelockdown command.
+  LogsChannelID: "LOGS_CHANNEL_ID"
+  Embed:
+    Title: "🔓 Server Lockdown Removed"
+    Description:
+      - "**👤 Executor:** {executor}"
+      - "**📅 Date:** {longtime}, {shorttime}"
+    Footer: "🔒 Moderation Action | YOUR_FOOTER_TEXT"
+    Color: "#00FF00"
+  Thumbnail: true
+
+hide:
+  Enabled: true  # Enable logging for the /hide command.
+  LogsChannelID: "LOGS_CHANNEL_ID"
+  Embed:
+    Title: "Channel Hidden"
+    Description:
+      - "{executor} has hidden {channelName} at {longtime}."
+    Footer: "Channel Management System"
+    Color: "#FF0000"
+  Thumbnail: true
+
+unhide:
+  Enabled: true  # Enable logging for the /unhide command.
+  LogsChannelID: "LOGS_CHANNEL_ID"
+  Embed:
+    Title: "Channel Unhidden"
+    Description:
+      - "{executor} has unhidden {channelName} at {longtime}."
+    Footer: "Channel Management System"
+    Color: "#00FF00"
+  Thumbnail: true
+
+# ===========================================================================
+# CATEGORIES TO AVOID (LOCK/UNLOCK & LOCKDOWN/REMOVELOCKDOWN)
+# ===========================================================================
+# Categories that will be immune to lockall/unlockall commands.
+avoid_categories_lock:
+  - "CATEGORY_ID_1"  # Example: Staff category to allow continuous communication.
+  - "CATEGORY_ID_2"
+  - "CATEGORY_ID_3"
+  - "CATEGORY_ID_4"
+
+# Categories that will be immune to lockdown/removelockdown commands.
+avoid_categories_lockdown:
+  - "CATEGORY_ID_2"  # Example: Avoid categories that should always remain hidden.
