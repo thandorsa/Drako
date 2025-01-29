@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Logs - Drako Development</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2c2c2c;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --accent: #3b82f6;
+            --accent-hover: #60a5fa;
+            --border: #4a4a4a;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            margin: 0;
+            padding: 70px 0 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .header h1 {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            color: var(--accent);
+            margin: 0;
+        }
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .btn {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+            font-size: clamp(0.8rem, 2vw, 1rem);
+        }
+        .btn:hover, .btn.active {
+            background-color: var(--accent);
+            color: var(--bg-primary);
+        }
+        .search-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .search-form input {
+            flex: 1 1 200px;
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 0.25rem;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: clamp(0.8rem, 2vw, 1rem);
+        }
+        .search-form input::placeholder {
+            color: var(--text-secondary);
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background-color: var(--bg-secondary);
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            background-color: var(--bg-primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: clamp(0.7rem, 1.5vw, 0.75rem);
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        .badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: clamp(0.7rem, 1.5vw, 0.75rem);
+            font-weight: 500;
+            text-transform: capitalize;
+        }
+        .badge-open { background-color: var(--success); color: var(--bg-primary); }
+        .badge-closed { background-color: var(--text-secondary); color: var(--bg-primary); }
+        .badge-deleted { background-color: var(--danger); color: var(--bg-primary); }
+        .pagination {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            list-style-type: none;
+            margin: 2rem 0;
+            padding: 0;
+            gap: 0.5rem;
+        }
+        .pagination li {
+            margin: 0 0.25rem;
+        }
+        .pagination a {
+            display: inline-block;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 0.25rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: background-color 0.2s, color 0.2s;
+            font-size: clamp(0.8rem, 2vw, 1rem);
+        }
+        .pagination a:hover, .pagination .active a {
+            background-color: var(--accent);
+            color: var(--bg-primary);
+        }
+        .empty-message {
+            background-color: var(--bg-secondary);
+            border-radius: 0.5rem;
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: clamp(1rem, 2.5vw, 1.1rem);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .filter-buttons {
+                margin-top: 1rem;
+                justify-content: flex-start;
+            }
+            th, td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include('partials/nav', {currentPage: 'ticket-logs'}) %>
+
+    <div class="container">
+        <div class="header">
+            <h1>Ticket Logs</h1>
+        </div>
+
+        <div class="filter-buttons">
+            <button class="btn active" data-filter="all">All Tickets</button>
+            <button class="btn" data-filter="open">Open</button>
+            <button class="btn" data-filter="closed">Closed</button>
+            <button class="btn" data-filter="deleted">Deleted</button>
+        </div>
+
+        <div class="search-form">
+            <input type="text" id="search-owner" placeholder="Search by Owner">
+            <input type="date" id="start-date">
+            <input type="date" id="end-date">
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Channel Name</th>
+                        <th>Requester</th>
+                        <th>Last Message Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="tickets-table-body">
+                    <% tickets.forEach(ticket => { %>
+                        <tr>
+                            <td><%= ticket.channelName %></td>
+                            <td><%= ticket.requesterName %></td>
+                            <td><%= ticket.lastMessageDate ? new Date(ticket.lastMessageDate).toLocaleString('en-GB') : 'No Message Found' %></td>
+                            <td><span class="badge badge-<%= ticket.status.toLowerCase() %>"><%= ticket.status %></span></td>
+                            <td>
+                                <a href="/transcript/<%= ticket.ticketId %>" class="btn" target="_blank">View Transcript</a>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="empty-message" class="empty-message" style="display: none;">
+            <p>No tickets found matching the current filters.</p>
+        </div>
+
+        <ul class="pagination" id="pagination"></ul>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tickets = <%- JSON.stringify(tickets) %>;
+            const itemsPerPage = 10;
+            let currentPage = 1;
+            let currentFilter = 'all';
+            let filteredTickets = [];
+
+            const filterButtons = document.querySelectorAll('.filter-buttons .btn');
+            const searchOwnerInput = document.getElementById('search-owner');
+            const startDateInput = document.getElementById('start-date');
+            const endDateInput = document.getElementById('end-date');
+            const ticketsTableBody = document.getElementById('tickets-table-body');
+            const emptyMessage = document.getElementById('empty-message');
+            const paginationContainer = document.getElementById('pagination');
+
+            const filterTickets = () => {
+                filteredTickets = tickets.filter(ticket => {
+                    const matchesStatus = currentFilter === 'all' || ticket.status.toLowerCase() === currentFilter;
+                    const matchesOwner = searchOwnerInput.value ? ticket.requesterName.toLowerCase().includes(searchOwnerInput.value.toLowerCase()) : true;
+                    const matchesDate = (!startDateInput.value || new Date(ticket.createdAt) >= new Date(startDateInput.value)) &&
+                                        (!endDateInput.value || new Date(ticket.createdAt) <= new Date(endDateInput.value));
+                    return matchesStatus && matchesOwner && matchesDate;
+                });
+
+                renderTickets();
+                renderPagination();
+            };
+
+            const renderTickets = () => {
+                const start = (currentPage - 1) * itemsPerPage;
+                const end = start + itemsPerPage;
+                const ticketsToShow = filteredTickets.slice(start, end);
+
+                ticketsTableBody.innerHTML = '';
+
+                if (ticketsToShow.length === 0) {
+                    emptyMessage.style.display = 'block';
+                    ticketsTableBody.parentElement.style.display = 'none';
+                } else {
+                    emptyMessage.style.display = 'none';
+                    ticketsTableBody.parentElement.style.display = 'table';
+                    
+                    ticketsToShow.forEach(ticket => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${ticket.channelName}</td>
+                            <td>${ticket.requesterName}</td>
+                            <td>${ticket.lastMessageDate ? new Date(ticket.lastMessageDate).toLocaleString('en-GB') : 'No Message Found'}</td>
+                            <td><span class="badge badge-${ticket.status.toLowerCase()}">${ticket.status}</span></td>
+                            <td>
+                                <a href="/transcript/${ticket.ticketId}" class="btn" target="_blank">View Transcript</a>
+                            </td>
+                        `;
+                        ticketsTableBody.appendChild(row);
+                    });
+                }
+            };
+
+            const renderPagination = () => {
+                const totalPages = Math.ceil(filteredTickets.length / itemsPerPage);
+                paginationContainer.innerHTML = '';
+
+                if (totalPages > 1) {
+                    for (let i = 1; i <= totalPages; i++) {
+                        const li = document.createElement('li');
+                        const a = document.createElement('a');
+                        a.href = '#';
+                        a.textContent = i;
+                        if (i === currentPage) {
+                            li.classList.add('active');
+                        }
+                        a.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            currentPage = i;
+                            renderTickets();
+                            renderPagination();
+                        });
+                        li.appendChild(a);
+                        paginationContainer.appendChild(li);
+                    }
+                }
+            };
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    currentFilter = button.dataset.filter;
+                    currentPage = 1;
+                    filterTickets();
+                });
+            });
+
+            searchOwnerInput.addEventListener('input', () => {
+                currentPage = 1;
+                filterTickets();
+            });
+
+            startDateInput.addEventListener('change', () => {
+                currentPage = 1;
+                filterTickets();
+            });
+
+            endDateInput.addEventListener('change', () => {
+                currentPage = 1;
+                filterTickets();
+            });
+
+            filterTickets();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drako Development - Transcript <%= ticket.channelName %></title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #36393f;
+            --bg-secondary: #2f3136;
+            --bg-tertiary: #202225;
+            --text-normal: #dcddde;
+            --text-muted: #72767d;
+            --text-link: #00b0f4;
+            --channeltextarea-background: #40444b;
+            --interactive-normal: #b9bbbe;
+            --interactive-hover: #dcddde;
+            --interactive-active: #fff;
+            --interactive-muted: #4f545c;
+            --header-primary: #fff;
+            --header-secondary: #b9bbbe;
+            --background-modifier-hover: rgba(79,84,92,0.16);
+            --background-modifier-active: rgba(79,84,92,0.24);
+            --background-modifier-selected: rgba(79,84,92,0.32);
+            --background-modifier-accent: hsla(0,0%,100%,0.06);
+            --brand-experiment: #5865f2;
+            --brand-experiment-560: #4752c4;
+            --success: #3ba55c;
+            --warning: #faa61a;
+            --danger: #ed4245;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-normal);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .embed {
+            background-color: var(--bg-secondary);
+            border-radius: 4px;
+            padding: 16px;
+            margin-bottom: 24px;
+            border-left: 4px solid var(--brand-experiment);
+        }
+
+        .embed-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--header-primary);
+            margin-bottom: 8px;
+        }
+
+        .embed-description {
+            color: var(--text-normal);
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .embed-field {
+            margin-bottom: 12px;
+        }
+
+        .embed-field-label {
+            font-weight: 600;
+            color: var(--header-secondary);
+            margin-bottom: 4px;
+            font-size: 14px;
+        }
+
+        .embed-field-value {
+            color: var(--text-normal);
+            font-size: 14px;
+            background-color: var(--bg-tertiary);
+            padding: 8px;
+            border-radius: 4px;
+        }
+
+        .embed-footer {
+            margin-top: 16px;
+            padding-top: 8px;
+            border-top: 1px solid var(--background-modifier-accent);
+            color: var(--text-muted);
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .message {
+            display: flex;
+            margin-bottom: 16px;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background-color 0.1s ease;
+        }
+
+        .message:hover {
+            background-color: var(--background-modifier-hover);
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 16px;
+        }
+
+        .message-content {
+            flex: 1;
+        }
+
+        .message-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 4px;
+            flex-wrap: wrap;
+        }
+
+        .message-author {
+            font-weight: 500;
+            margin-right: 8px;
+            font-size: 16px;
+            color: var(--header-primary);
+        }
+
+        .author-badge {
+            font-size: 10px;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .author-badge.owner {
+            background-color: var(--warning);
+            color: var(--header-primary);
+        }
+
+        .author-badge.staff {
+            background-color: var(--success);
+            color: var(--header-primary);
+        }
+
+        .message-timestamp {
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .message-text {
+            word-wrap: break-word;
+            word-break: break-word;
+            white-space: pre-wrap;
+            font-size: 15px;
+            color: var(--text-normal);
+        }
+
+        .message-attachments img,
+        .message-attachments video {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 4px;
+            margin-top: 8px;
+        }
+
+        .sidebar {
+            width: 240px;
+            background-color: var(--bg-secondary);
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .section {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--header-secondary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .section-content {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .participants-list {
+            list-style: none;
+        }
+
+        .participants-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--interactive-normal);
+        }
+
+        .participants-list img.avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .message-input-container {
+            background-color: var(--bg-secondary);
+            padding: 20px;
+            border-top: 1px solid var(--background-modifier-accent);
+        }
+
+        .message-input {
+            display: flex;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .message-input textarea {
+            flex: 1;
+            background-color: var(--channeltextarea-background);
+            border: none;
+            border-radius: 8px;
+            color: var(--text-normal);
+            padding: 10px;
+            resize: vertical;
+            min-height: 40px;
+            font-size: 14px;
+        }
+
+        .message-input button {
+            background-color: var(--brand-experiment);
+            color: var(--header-primary);
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .message-input button:hover {
+            background-color: var(--brand-experiment-560);
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                order: -1;
+            }
+
+            .content {
+                padding: 10px;
+            }
+
+            .message-input {
+                flex-direction: column;
+            }
+
+            .message-input textarea {
+                margin-bottom: 10px;
+            }
+
+            .message-input button {
+                margin-left: 0;
+            }
+        }
+
+        .spoiler {
+            background-color: #202225;
+            color: transparent;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .spoiler:hover, .spoiler:active {
+            background-color: rgba(32, 34, 37, 0.5);
+            color: var(--text-normal);
+        }
+
+        .mention {
+            background-color: rgba(88, 101, 242, 0.3);
+            color: #5865f2;
+            padding: 0 2px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        code {
+            background-color: #2f3136;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: 'Consolas', 'Courier New', monospace;
+        }
+
+        pre {
+            background-color: #2f3136;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+
+        pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="content" id="content">
+            <div class="embed">
+                <div class="embed-title">Ticket Summary</div>
+                <div class="embed-description">
+                    This transcript contains the conversation and details related to ticket #<%= ticket.ticketId %>.
+                </div>
+                <% questions.forEach(question => { %>
+                    <div class="embed-field">
+                        <div class="embed-field-label"><%= question.question %></div>
+                        <div class="embed-field-value"><%= question.answer %></div>
+                    </div>
+                <% }) %>
+                <div class="embed-footer">
+                    <span><i class="fas fa-ticket-alt"></i> Ticket System</span>
+                    <span><i class="fas fa-calendar-alt"></i> <%= new Date().toLocaleDateString() %></span>
+                </div>
+            </div>
+
+            <div id="messagesContainer">
+                <% messages.forEach(message => { %>
+                    <div class="message" data-message-id="<%= message._id %>">
+                        <img class="message-avatar" src="<%= message.avatar %>" alt="<%= message.author %>'s avatar">
+                        <div class="message-content">
+                            <div class="message-header">
+                                <span class="message-author"><%= message.author %></span>
+                                <% if (message.isOwner) { %>
+                                    <span class="author-badge owner">Owner</span>
+                                <% } else if (message.isSupport) { %>
+                                    <span class="author-badge staff">Staff</span>
+                                <% } %>
+                                <span class="message-timestamp"><%= new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }) %></span>
+                            </div>
+                            <div class="message-text"><%- formatDiscordText(message.content, participants, []) %></div>
+                            <% if (message.attachments && message.attachments.length > 0) { %>
+                                <div class="message-attachments">
+                                    <% message.attachments.forEach(attachment => { %>
+                                        <% if (attachment.contentType && attachment.contentType.startsWith('image/')) { %>
+                                            <img src="<%= attachment.url %>" alt="Attached image" onerror="this.onerror=null; this.src='<%= attachment.proxyURL %>';">
+                                        <% } else if (attachment.contentType && attachment.contentType.startsWith('video/')) { %>
+                                            <video controls>
+                                                <source src="<%= attachment.url %>" type="<%= attachment.contentType %>">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        <% } else { %>
+                                            <a href="<%= attachment.url %>" target="_blank">Attached file</a>
+                                        <% } %>
+                                    <% }) %>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="section ticket-info">
+                <div class="section-title">Ticket Information</div>
+                <div class="section-content">
+                    <div><i class="fas fa-tag"></i> <strong>Ticket:</strong> <%= ticket.channelName %></div>
+                    <div><i class="fas fa-server"></i> <strong>Guild:</strong> <%= guildName %></div>
+                    <div><i class="fas fa-exclamation-circle"></i> <strong>Priority:</strong> <%= ticket.priority %></div>
+                    <div><i class="fas fa-comments"></i> <strong>Messages:</strong> <span class="messages-count"><%= messageCount %></span></div>
+                </div>
+            </div>
+            <div class="section participants">
+                <div class="section-title">Participants</div>
+                <ul class="participants-list">
+                    <% participants.forEach(participant => { %>
+                        <li>
+                            <img class="avatar" src="<%= participant.avatar %>" alt="<%= participant.name %>'s avatar">
+                            <%= participant.name %> (<%= participant.id %>)
+                        </li>
+                    <% }) %>
+                </ul>
+            </div>
+            <div class="section summary">
+                <div class="section-title">Summary</div>
+                <div class="section-content">
+                    <div><i class="fas fa-calendar-alt"></i> <strong>Open Date:</strong> <%= new Date(ticket.createdAt).toLocaleString() %></div>
+                    <% if (ticket.closedAt) { %>
+                        <div><i class="fas fa-calendar-check"></i> <strong>Closure Date:</strong> <%= new Date(ticket.closedAt).toLocaleString() %></div>
+                    <% } %>
+                    <div><i class="fas fa-star"></i> <strong>Review:</strong> <%= ticket.rating %></div>
+                    <div><i class="fas fa-comment-dots"></i> <strong>Review Reason:</strong> <%= ticket.reviewFeedback ? ticket.reviewFeedback : "No Reason Stated" %></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <% if (isStaff) { %>
+        <div class="message-input-container" <% if (!isOpen) { %> style="display: none;" <% } %>>
+            <form id="sendMessageForm" onsubmit="return handleFormSubmit();">
+                <div class="message-input">
+                    <textarea id="messageContent" name="messageContent" placeholder="Type your message..." required></textarea>
+                    <button type="submit" id="sendMessageButton">Send</button>
+                </div>
+            </form>
+        </div>
+    <% } %>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+    function formatDiscordText(text, participants, roles) {
+        // Replace newlines with <br> tags
+        text = text.replace(/\n/g, '<br>');
+
+        // Bold
+        text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+        // Italic
+        text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+        text = text.replace(/_([^_]+)_/g, '<em>$1</em>');
+
+        // Underline
+        text = text.replace(/__(.*?)__/g, '<u>$1</u>');
+
+        // Strikethrough
+        text = text.replace(/~~(.*?)~~/g, '<del>$1</del>');
+
+        // Code blocks
+        text = text.replace(/```(\w+)?\n?([\s\S]*?)```/g, (match, language, code) => {
+            return `<pre><code class="language-${language || ''}">${code.trim()}</code></pre>`;
+        });
+
+        // Inline code
+        text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+        // User mentions
+        text = text.replace(/<@!?(\d+)>/g, (match, userId) => {
+            const user = participants.find(u => u.id === userId);
+            const username = user ? user.name : `User ${userId}`;
+            return `<span class="mention" data-user-id="${userId}">@${username}</span>`;
+        });
+
+        // Role mentions
+        text = text.replace(/<@&(\d+)>/g, (match, roleId) => {
+            const role = roles.find(r => r.id === roleId);
+            const roleName = role ? role.name : `Role ${roleId}`;
+            return `<span class="mention" data-role-id="${roleId}">@${roleName}</span>`;
+        });
+
+        // Channel mentions
+        text = text.replace(/<#(\d+)>/g, '<span class="mention" data-channel-id="$1">#channel</span>');
+
+        // Spoilers
+        text = text.replace(/\|\|(.*?)\|\|/g, '<span class="spoiler">$1</span>');
+
+        // URLs
+        text = text.replace(/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig, '<a href="$1" target="_blank">$1</a>');
+
+        return text;
+    }
+
+    function handleFormSubmit() {
+        const messageContent = $('#messageContent').val().trim();
+        if (!messageContent || messageContent.length > 2000) {
+            alert('Message must be between 1 and 2000 characters.');
+            return false;
+        }
+        $('#sendMessageButton').prop('disabled', true);
+        $.ajax({
+            url: '/send-message/<%= ticket.ticketId %>',
+            method: 'POST',
+            data: { messageContent: messageContent },
+            success: function() {
+                $('#messageContent').val('');
+                $('#sendMessageButton').prop('disabled', false);
+                fetchMessages();
+            },
+            error: function(err) {
+                console.error('Error sending message:', err);
+                $('#sendMessageButton').prop('disabled', false);
+            }
+        });
+        return false;
+    }
+
+    function fetchMessages() {
+        $.ajax({
+            url: '/transcript/<%= ticket.ticketId %>/messages',
+            method: 'GET',
+            success: function(data) {
+                updateMessages(data);
+            },
+            error: function(err) {
+                console.error('Error fetching messages:', err);
+            }
+        });
+    }
+
+    function updateMessages(data) {
+        const contentDiv = $('#messagesContainer');
+        const existingMessages = new Set();
+        contentDiv.find('.message').each(function() {
+            existingMessages.add($(this).data('messageId'));
+        });
+
+        $('.section-content .messages-count').text(data.messageCount);
+
+        const participantsList = $('.participants-list');
+        participantsList.empty();
+        data.participants.forEach(participant => {
+            const participantElement = `
+                <li>
+                    <img class="avatar" src="${participant.avatar}" alt="${participant.name}'s avatar">
+                    ${participant.name} (${participant.id})
+                </li>`;
+            participantsList.append(participantElement);
+        });
+
+        data.messages.forEach(message => {
+            if (!existingMessages.has(message._id)) {
+                let attachmentsHtml = '';
+                if (message.attachments && message.attachments.length > 0) {
+                    attachmentsHtml = '<div class="message-attachments">';
+                    message.attachments.forEach(attachment => {
+                        if (attachment.contentType.startsWith('image/')) {
+                            attachmentsHtml += `<img src="${attachment.url}" alt="Attached image" onerror="this.onerror=null; this.src='${attachment.proxyURL}';">`;
+                        } else if (attachment.contentType.startsWith('video/')) {
+                            attachmentsHtml += `
+                                <video controls>
+                                    <source src="${attachment.url}" type="${attachment.contentType}">
+                                    Your browser does not support the video tag.
+                                </video>`;
+                        } else {
+                            attachmentsHtml += `<a href="${attachment.url}" target="_blank">Attached file</a>`;
+                        }
+                    });
+                    attachmentsHtml += '</div>';
+                }
+
+                let badgeHtml = '';
+                if (message.isOwner) {
+                    badgeHtml = '<span class="author-badge owner">Owner</span>';
+                } else if (message.isSupport) {
+                    badgeHtml = '<span class="author-badge staff">Staff</span>';
+                }
+
+                let messageContent = formatDiscordText(message.content, data.participants, []);
+                messageContent = messageContent.replace(/<:\w+:(\d+)>/g, (match, p1) => {
+                    return `<img src="https://cdn.discordapp.com/emojis/${p1}.png?v=1" alt="${match}" style="width:24px;height:24px;vertical-align:middle;">`;
+                });
+
+                const messageElement = `
+                    <div class="message" data-message-id="${message._id}">
+                        <img class="message-avatar" src="${message.avatar}" alt="${message.author}'s avatar">
+                        <div class="message-content">
+                            <div class="message-header">
+                                <span class="message-author">${message.author}</span>
+                                ${badgeHtml}
+                                <span class="message-timestamp">${new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</span>
+                            </div>
+                            <div class="message-text">${messageContent}</div>
+                            ${attachmentsHtml}
+                        </div>
+                    </div>`;
+                contentDiv.append(messageElement);
+                existingMessages.add(message._id);
+            }
+        });
+    }
+
+    function autoResizeTextarea() {
+        const textarea = document.getElementById('messageContent');
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+    }
+
+    $(document).ready(function() {
+        autoResizeTextarea();
+        setInterval(fetchMessages, 5000);
+        fetchMessages();
+    });
+    </script>
+</body>
+</html>

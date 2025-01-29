@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drako Development</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2c2c2c;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --accent: #3b82f6;
+            --accent-hover: #60a5fa;
+        }
+        body, html {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            text-align: center;
+            padding: 2rem;
+            width: 100%;
+            max-width: 800px;
+        }
+        .logo {
+            font-size: clamp(3rem, 10vw, 4rem);
+            color: var(--accent);
+            margin-bottom: 2rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .logo:hover {
+            transform: scale(1.1);
+        }
+        h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        p {
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .button {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .button:hover {
+            background-color: var(--accent);
+            transform: translateY(-3px);
+        }
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+        .social-icons a {
+            color: var(--text-secondary);
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: var(--accent);
+            transform: translateY(-3px);
+        }
+        @keyframes flyAround {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(50px, -50px) rotate(90deg); }
+            50% { transform: translate(0, -100px) rotate(180deg); }
+            75% { transform: translate(-50px, -50px) rotate(270deg); }
+        }
+        @media (max-width: 600px) {
+            .buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo" id="logo">
+            <i class="fas fa-dragon"></i>
+        </div>
+        <h1>Drako Development</h1>
+        <p>Empowering Discord communities with powerful bots</p>
+        <div class="buttons">
+            <a href="/ticket-logs" class="button">Ticket Logs</a>
+            <a href="/alerts" class="button">Alerts</a>
+            <a href="/embed" class="button">Embeds</a>
+        </div>
+        <div class="social-icons">
+            <a href="https://discord.gg/drakobot" class="fab fa-discord" aria-label="Discord" target="_blank" rel="noopener noreferrer"></a>
+            <a href="https://builtbybit.com/resources/drako-bot-multi-purpose-discord-bot.22266/" class="fas fa-cogs" aria-label="BuiltByBit" target="_blank" rel="noopener noreferrer"></a>
+        </div>
+    </div>
+
+    <script>
+        const logo = document.getElementById('logo');
+        let clickCount = 0;
+        
+        logo.addEventListener('click', () => {
+            clickCount++;
+            if (clickCount === 5) {
+                logo.style.animation = 'flyAround 2s ease-in-out';
+                setTimeout(() => {
+                    logo.style.animation = '';
+                }, 2000);
+                clickCount = 0;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<style>
+    .nav {
+        background-color: rgba(44, 44, 44, 0.8);
+        backdrop-filter: blur(10px);
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .nav-logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--accent);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+    }
+    .nav-logo i {
+        margin-right: 0.5rem;
+    }
+    .nav-links {
+        display: flex;
+        gap: 1rem;
+    }
+    .nav-link {
+        color: var(--text-primary);
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+    .nav-link:hover {
+        background-color: rgba(59, 130, 246, 0.1);
+        color: var(--accent);
+    }
+    .nav-link.active {
+        background-color: var(--accent);
+        color: var(--bg-primary);
+    }
+    @media (max-width: 768px) {
+        .nav {
+            flex-direction: column;
+            padding: 1rem;
+        }
+        .nav-links {
+            margin-top: 1rem;
+        }
+    }
+</style>
+
+<nav class="nav">
+    <a href="/" class="nav-logo">
+        <i class="fas fa-dragon"></i>
+        Drako Development
+    </a>
+    <div class="nav-links">
+        <a href="/" class="nav-link <%= currentPage === 'home' ? 'active' : '' %>">Home</a>
+        <a href="/ticket-logs" class="nav-link <%= currentPage === 'ticket-logs' ? 'active' : '' %>">Ticket Logs</a>
+        <a href="/alerts" class="nav-link <%= currentPage === 'alerts' ? 'active' : '' %>">Alerts</a>
+        <a href="/embed" class="nav-link <%= currentPage === 'embed' ? 'active' : '' %>">Embeds</a>
+    </div>
+</nav>
+
